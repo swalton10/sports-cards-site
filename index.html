@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Sports Cards Store</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+    }
+    form {
+      max-width: 600px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+    }
+    .card-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 200px;
+      padding: 10px;
+      text-align: center;
+    }
+    .card img {
+      max-width: 100%;
+      border-radius: 6px;
+    }
+    .card button {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 10px;
+      margin-top: 10px;
+      width: 100%;
+      cursor: pointer;
+    }
+    .card button:hover {
+      background: #218838;
+    }
+  </style>
+</head>
+<body>
+  <h1>Sell Your Sports Cards</h1>
+
+  <form id="cardForm">
+    <input type="text" id="title" placeholder="Card Name" required>
+    <textarea id="description" placeholder="Description" required></textarea>
+    <input type="number" id="price" placeholder="Price ($)" required>
+    <input type="file" id="image" accept="image/*" required>
+    <button type="submit">Add Card</button>
+  </form>
+
+  <div class="card-list" id="cardList"></div>
+
+  <script>
+    const cardForm = document.getElementById('cardForm');
+    const cardList = document.getElementById('cardList');
+
+    cardForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const title = document.getElementById('title').value;
+      const description = document.getElementById('description').value;
+      const price = document.getElementById('price').value;
+      const imageFile = document.getElementById('image').files[0];
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const imageURL = e.target.result;
+
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${imageURL}" alt="${title}" />
+          <h3>${title}</h3>
+          <p>${description}</p>
+          <p><strong>$${price}</strong></p>
+          <button>Buy Now</button>
+        `;
+
+        cardList.appendChild(card);
+        cardForm.reset();
+      }
+
+      if (imageFile) {
+        reader.readAsDataURL(imageFile);
+      }
+    });
+  </script>
+</body>
+</html>
